@@ -1,0 +1,29 @@
+import mongoose,{ Schema } from "mongoose";
+import { Iideation } from "../interfaces/ideation.interface";
+import Project from "./project.model";
+
+
+const ideationSchema=new Schema<Iideation>({
+    projectId:{
+        type:Schema.Types.ObjectId,
+        required:[true,'project must required for creating canvas'],
+        unique:true
+    },
+    people:{
+        type:[String],
+        default:[]
+    },
+    context:{
+        type:[String],
+        default:[]
+    },
+    props:{
+        type:[String],
+        default:[]
+    },
+    activity:{
+        type:[String],
+        default:[]
+    },
+    
+})
