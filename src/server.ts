@@ -2,11 +2,11 @@ import 'reflect-metadata'
 import * as bodyParser  from 'body-parser'
 import dotenv from 'dotenv'
 dotenv.config({path:'./src/config.env'})
-import { interfaces,InversifyExpressServer,TYPE } from "inversify-express-utils";
-import { NextFunction,Request,Response } from 'express';
+import { InversifyExpressServer} from "inversify-express-utils";
 import container from "./inversify.config";
 import mongoose from 'mongoose';
-
+import errorController from './controller/error.controller';
+import cors from 'cors'
 mongoose.connect(process.env.CONN_STR!).then(()=>{
     console.log("connected successfully");
 })
@@ -15,16 +15,17 @@ mongoose.connect(process.env.CONN_STR!).then(()=>{
 const server=new InversifyExpressServer(container,null,{rootPath:'/de-canvas'});
 
 server.setConfig((app)=>{
+    app.use(cors())
     app.use(bodyParser.urlencoded({
         extended:true
     }))
     app.use(bodyParser.json())
 }).setErrorConfig((app)=>{
-    app.use((err:any,req:Request,res:Response,next:NextFunction)=>{  
-        res.status(500).json({
-            message:err.message
-        })
-    })
-}).build().listen(8080,'localhost',()=>{
-    console.log('Server startted');
+    app.use(errorController)
+})
+
+const app=server.build()
+
+app.listen(8080,'127.0.0.1',()=>{
+    console.log("server startted on http://127.0.0.1:8080/de-canvas");
 })

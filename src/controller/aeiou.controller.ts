@@ -1,11 +1,12 @@
 import { controller, httpPost ,request,response,next, httpGet} from "inversify-express-utils";
-import { AeiouService } from "../services/aeiou.service";
+import  AeiouService  from "../services/aeiou.service";
 import { inject } from "inversify";
 import { Types } from "mongoose";
 import { TYPES } from "../constants/type";
 import { Request,Response,NextFunction } from "express";
 import { IAeiou } from "../interfaces/aeiou.interface";
-import { Iproject } from "../interfaces/projectdetails.interface";
+import StatusConstants from "../constants/status.constant";
+import CustomeError from "../utils/custome.Error";
 
 @controller('/user/aeiou')
 class AeiouController{
@@ -20,8 +21,9 @@ class AeiouController{
             const data:IAeiou={...req.body}
             data.projectId=new Types.ObjectId(req.projectId!)
             const updated=await this.aeiouService.workingonAeiou(userId!,data)
+            let canvas= await this.aeiouService.getAeiou(req.userId!)
             res.status(201).json({
-                updated
+                Aeiou:canvas
             })
         }
         catch(err:any){
@@ -33,16 +35,16 @@ class AeiouController{
     @httpGet('/',TYPES.AuthenticationMiddleware,TYPES.projectAuthenticatorMiddlerWare)
     private async getAeiou(@request()req:Request,@response()res:Response,@next()next:NextFunction){
         try{
-            const canvas= await this.aeiouService.getAeiou(req.userId!)
+            let canvas= await this.aeiouService.getAeiou(req.userId!)
+            if(canvas.length==0){
+               return next(new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode,"AEIOU canvas is not found please create first")) 
+            }
             res.status(200).json({
-                status:"success",
-                canvas
+                Aeiou:canvas
             })
         }
         catch(err:any){
-            res.status(500).json({
-                message:err.message
-            })
+            next(err)
         }
     }
 }
