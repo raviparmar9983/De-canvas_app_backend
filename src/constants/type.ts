@@ -10,4 +10,8 @@ export const TYPES={
     projectAuthenticatorMiddlerWare:Symbol.for('ProjectAuthenticatorMiddlerWare'),
     ideationModel:Symbol.for("IdeationModel"),
     ideationService:Symbol.for("IdeationService"),
+    empathyModel:Symbol.for('EmpathyModel'),
+    productDevModel:Symbol.for('ProductDevelopment'),
+    empathyService:Symbol.for('EmpathyService'),
+    productDevService:Symbol.for('ProductDevelopmentService'),
 }

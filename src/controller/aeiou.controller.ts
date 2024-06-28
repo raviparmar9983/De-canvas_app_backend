@@ -40,7 +40,7 @@ class AeiouController{
                return next(new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode,"AEIOU canvas is not found please create first")) 
             }
             res.status(200).json({
-                Aeiou:canvas
+                Aeiou:canvas[0]
             })
         }
         catch(err:any){

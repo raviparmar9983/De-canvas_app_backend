@@ -1,6 +1,6 @@
 import { Document, Types } from "mongoose";
 
-export interface common extends Document {
+export interface IproductDev extends Document {
     userId: Types.ObjectId,
     projectId: Types.ObjectId,
     purpose_info:string[],

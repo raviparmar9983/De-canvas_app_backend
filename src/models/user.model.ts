@@ -39,7 +39,7 @@ const userSchema = new Schema<IUser>({
     passwordTokenExprie:Date
 })
 
-userSchema.pre('save', async function (next) {
+        userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next()
         return;
