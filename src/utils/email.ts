@@ -5,12 +5,12 @@ const sendmail=(option:any)=>{
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'janessa72@ethereal.email',
-            pass: 'xYq733k2nPXWQScb9T'
+            user: 'emely.ferry88@ethereal.email',
+            pass: '9s3cp5x7FWzmDajmaR'
         }
     });
     transporter.sendMail({
-        from: 'janessa72@ethereal.email',
+        from: 'parmarravi2162@gmail.com',
         to: option.email,
         subject: option.subject,
         text: option.message
