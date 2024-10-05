@@ -33,6 +33,7 @@ const custome_Error_1 = __importDefault(require("../utils/custome.Error"));
 const email_1 = __importDefault(require("../utils/email"));
 const email_verification_1 = __importDefault(require("../models/email.verification"));
 const crypto_1 = __importDefault(require("crypto"));
+const templates_1 = require("../templates");
 let UserService = class UserService {
     constructor(userModel) {
         this.userModel = userModel;
@@ -78,10 +79,11 @@ let UserService = class UserService {
             user.passwordForgotToken = token;
             user.passwordTokenExprie = Date.now() + (600000);
             yield user.save({ validateBeforeSave: false });
+            const link = `localhost:4200/resetpassword;token=${token}`;
             const option = {
                 email,
                 subject: 'Your password reset link',
-                message: `the password reset link for you  localhost:8080/de-canvas/user/resetpassword/${token} please verify on   http://192.168.4.51:4200/resetpassword;token=${token}`
+                html: (0, templates_1.resetPaswordTemplate)(link)
             };
             (0, email_1.default)(option);
             return `password reset link send on your registered email`;

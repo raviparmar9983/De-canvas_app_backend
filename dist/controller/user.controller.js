@@ -33,6 +33,7 @@ const custome_Error_1 = __importDefault(require("../utils/custome.Error"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const email_verification_1 = __importDefault(require("../models/email.verification"));
 const email_1 = __importDefault(require("../utils/email"));
+const templates_1 = require("../templates");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -48,7 +49,13 @@ let UserController = class UserController {
                 }
                 const token = yield this.userService.createUser({ name, email, password, confirmPassword }, session);
                 const emailsend = yield email_verification_1.default.findOneAndUpdate({ email }, { token }, { session, new: true, upsert: true });
-                (0, email_1.default)({ email, subject: 'you verification link for this', message: `you verfication link for localhost:8080/de-canvas/user/verify/${token} website  : http://192.168.4.51:4200/verify;token=${token}` });
+                const link = `localhost:4200/verify;token=${token}`;
+                const option = {
+                    email,
+                    subject: `Verify your account`,
+                    html: (0, templates_1.verifyAccountTemplate)(link)
+                };
+                (0, email_1.default)(option);
                 yield session.commitTransaction();
                 res.status(200).json({
                     status: 'success',

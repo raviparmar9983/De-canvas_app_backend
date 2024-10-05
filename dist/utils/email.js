@@ -6,18 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendmail = (option) => {
     const transporter = nodemailer_1.default.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
+        service: 'gmail',
         auth: {
-            user: 'emely.ferry88@ethereal.email',
-            pass: '9s3cp5x7FWzmDajmaR'
+            user: 'parmarravi1162@gmail.com',
+            pass: 'yriy bpwl ykuf fgqz'
         }
     });
     transporter.sendMail({
-        from: 'parmarravi2162@gmail.com',
+        from: 'parmarravi1162@gmail.com',
         to: option.email,
         subject: option.subject,
-        text: option.message
+        html: option.html
     });
 };
 exports.default = sendmail;
