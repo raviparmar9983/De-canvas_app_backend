@@ -1,32 +1,32 @@
 import 'reflect-metadata'
-import * as bodyParser  from 'body-parser'
+import * as bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-dotenv.config({path:'./src/config.env'})
-import { InversifyExpressServer} from "inversify-express-utils";
+dotenv.config({ path: './src/config.env' })
+import { InversifyExpressServer } from "inversify-express-utils";
 import container from "./inversify.config";
 import mongoose from 'mongoose';
 import errorController from './controller/error.controller';
 import cors from 'cors'
 
-mongoose.connect(process.env.CONN_STR!).then(()=>{
+mongoose.connect(process.env.CONN_STR!).then(() => {
     console.log("connected successfully");
 })
 
 
-const server=new InversifyExpressServer(container,null,{rootPath:'/de-canvas'});
+const server = new InversifyExpressServer(container, null, { rootPath: '/de-canvas' });
 
-server.setConfig((app)=>{
+server.setConfig((app) => {
     app.use(cors())
     app.use(bodyParser.urlencoded({
-        extended:true
+        extended: true
     }))
     app.use(bodyParser.json())
-}).setErrorConfig((app)=>{
+}).setErrorConfig((app) => {
     app.use(errorController)
 })
 
-const app=server.build()
+const app = server.build()
 
-app.listen(8080,'127.0.0.1',()=>{
-    console.log("server startted on http://127.0.0.1:8080/de-canvas");
+app.listen(8080, () => {
+    console.log("server startted on");
 })
