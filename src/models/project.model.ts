@@ -1,12 +1,12 @@
 import mongoose, { Schema, Types } from "mongoose";
 import { Iproject } from "../interfaces/projectdetails.interface";
 
-
 const projectSchema = new Schema<Iproject>({
     userId: {
         type: Schema.Types.ObjectId,
         required: [true, 'user id is required'],
-        unique: true
+        unique: true,
+        default:undefined
     },
     projectid: {
         type: Number,

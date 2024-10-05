@@ -7,7 +7,8 @@ export const aeiouSchema = new Schema<IAeiou>({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'user id is required'],
-        unique: true
+        unique: true,
+        default:undefined
     },
     projectId: {
         type: Schema.Types.ObjectId,

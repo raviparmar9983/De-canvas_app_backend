@@ -7,13 +7,13 @@ import { Iproject } from "../interfaces/projectdetails.interface";
 import mongoose, { Types, mongo } from "mongoose";
 import CustomeError from "../utils/custome.Error";
 import aeiouModel from "../models/aeiou.model";
-import ideationModel from "@model/ideation.model";
+import ideationModel from "../models/ideation.model";
+import Product_Development from "../models/produc_dev.model";
+import empathModel from "../models/empath.model";
 
 @controller('/user/project', TYPES.AuthenticationMiddleware)
 class ProjectController {
-
     constructor(@inject(TYPES.prjectservice) private projectService: ProjectService) { }
-
     @httpGet('/')
     private async getProject(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
         try {
@@ -37,9 +37,13 @@ class ProjectController {
         try {
             const data: Iproject = (req.body as Iproject)
             data.userId = new Types.ObjectId(req.userId)!;
-            const newProject: Iproject = await this.projectService.create(data)
-            await aeiouModel.create({ userId: req.userId, projectId: newProject.id })
-            await ideationModel.create({ userId: req.userId, projectId: newProject._id })
+            const newProject: Iproject[] = await this.projectService.create(data, session)
+            
+            await aeiouModel.create([{ userId: req.userId, projectId: newProject[0]._id }], { session })
+            await ideationModel.create([{ userId: req.userId, projectId: newProject[0]._id }], { session })
+            await Product_Development.create([{ userId: req.userId, projectId: newProject[0]._id }], { session })
+            await empathModel.create([{ userId: req.userId, projectId: newProject[0]._id }], { session });
+
             await session.commitTransaction()
             res.status(201).json({
                 status: 'Success',
@@ -54,10 +58,8 @@ class ProjectController {
             await session.endSession()
         }
     }
-
     @httpPatch('/:id', TYPES.projectAuthenticatorMiddlerWare)
     private async updateProject(@requestParam('id') id: string, @request() req: Request, @response() res: Response, @next() next: NextFunction) {
-
         try {
             const data: Iproject = (req.body as Iproject)
             const updated: Iproject = await this.projectService.update(id, data)
@@ -74,10 +76,12 @@ class ProjectController {
         const session = await mongoose.startSession();
         session.startTransaction()
         try {
-            const delere: any = await this.projectService.delete(id, session);
+            const delere: any = await this.projectService.delete(id, session)
             ////// ON PROJECT DELETE DELETE THE CANVAS REFERES TO THAT PROJECT ALSO 
-            //    await aeiouModel.deleteOne({projectId:id});
-
+            await aeiouModel.deleteOne({ projectId: id }).session(session)
+            await ideationModel.deleteOne({ projectId: id }).session(session)
+            await Product_Development.deleteOne({ projectId: id }).session(session)
+            await empathModel.deleteOne({ projectId: id }).session(session)
             await session.commitTransaction()
             res.status(204).json({
                 message: 'Deleted successfully'

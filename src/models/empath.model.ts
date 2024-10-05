@@ -6,6 +6,7 @@ const empathySchema=new mongoose.Schema<IEmpathy>({
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         unique:true,
+        default:undefined
     },
     projectId:{
         type:mongoose.Schema.Types.ObjectId,

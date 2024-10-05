@@ -4,6 +4,13 @@ import Project from "./project.model";
 
 
 const ideationSchema = new Schema<Iideation>({
+    userId:{
+        type:Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+        ref: 'User',
+        default:undefined
+    },
     projectId: {
         type: Schema.Types.ObjectId,
         required: [true, 'project must required for creating canvas'],

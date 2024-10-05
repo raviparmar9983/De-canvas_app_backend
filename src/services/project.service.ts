@@ -9,14 +9,14 @@ import { Iproject } from '../interfaces/projectdetails.interface';
 class ProjectService{
     constructor(@inject(TYPES.projectModel)private projectModel:mongoose.Model<Iproject>){}
     
-    public async create(project:Iproject):Promise<Iproject>{
-        return await this.projectModel.create(project)
+    public async create(project:Iproject,session:mongoose.mongo.ClientSession):Promise<any>{
+        return await this.projectModel.create([project],{session})
     }
     public async update(id:String,data:Iproject):Promise<any>{
         return await this.projectModel.updateOne({_id:id},{...data},{runValidators:true})
     }
     public async delete(id:string,session:mongoose.ClientSession):Promise<any>{
-        return await this.projectModel.deleteOne({_id:id}).session(session)
+        return this.projectModel.deleteOne({_id:id}).session(session)
     }
     public async getProject(userId:string):Promise<Iproject|null>{
         return await this.projectModel.findOne({userId})

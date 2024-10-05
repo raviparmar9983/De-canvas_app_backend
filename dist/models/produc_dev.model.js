@@ -1,16 +1,19 @@
-import { IproductDev } from "@interface/prouduct_dev.interface";
-import mongoose, { Document } from "mongoose";
-
-const product_developmentSchema = new mongoose.Schema<IproductDev>({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const product_developmentSchema = new mongoose_1.default.Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
         ref: 'User',
         unique: true,
-        default:undefined
+        default: undefined
     },
     projectId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
         ref: 'Projects',
         unique: true
@@ -47,9 +50,8 @@ const product_developmentSchema = new mongoose.Schema<IproductDev>({
         type: [String],
         required: true
     }
-},{
-        timestamps: true
-})
-
-const Product_Development = mongoose.model<IproductDev>("Product_Development", product_developmentSchema);
-export default Product_Development;
+}, {
+    timestamps: true
+});
+const Product_Development = mongoose_1.default.model("Product_Development", product_developmentSchema);
+exports.default = Product_Development;
