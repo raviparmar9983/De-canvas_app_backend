@@ -49,6 +49,6 @@ server.setConfig((app) => {
     app.use(error_controller_1.default);
 });
 const app = server.build();
-app.listen(8080, '127.0.0.1', () => {
-    console.log("server startted on http://127.0.0.1:8080/de-canvas");
+app.listen(8080, () => {
+    console.log("server startted on");
 });
