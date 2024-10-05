@@ -7,6 +7,7 @@ import container from "./inversify.config";
 import mongoose from 'mongoose';
 import errorController from './controller/error.controller';
 import cors from 'cors'
+
 mongoose.connect(process.env.CONN_STR!).then(()=>{
     console.log("connected successfully");
 })
