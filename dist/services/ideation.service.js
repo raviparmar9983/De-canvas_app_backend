@@ -50,8 +50,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const type_1 = require("../constants/type");
 const mongoose_1 = __importStar(require("mongoose"));
-const custome_Error_1 = __importDefault(require("@util/custome.Error"));
-const generatePDF_1 = require("@util/generatePDF");
+const custome_Error_1 = __importDefault(require("../utils/custome.Error"));
+const generatePDF_1 = require("../utils/generatePDF");
 const status_constant_1 = __importDefault(require("../constants/status.constant"));
 const ideation_template_1 = require("../templates/ideation.template");
 let IdeationService = class IdeationService {

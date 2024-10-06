@@ -2,10 +2,10 @@ import { inject, injectable } from "inversify";
 import { IAeiou } from "../interfaces/aeiou.interface";
 import { TYPES } from "../constants/type";
 import mongoose, { Types } from "mongoose";
-import CustomeError from "@util/custome.Error";
+import CustomeError from "../utils/custome.Error";
 import StatusConstants from "../constants/status.constant";
 import { generateHtmlString } from "../templates/aeiouTemplate";
-import { generatePdf } from "@util/generatePDF";
+import { generatePdf } from "../utils/generatePDF";
 
 @injectable()
 class AeiouService {

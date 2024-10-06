@@ -50,10 +50,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const type_1 = require("../constants/type");
 const mongoose_1 = __importStar(require("mongoose"));
-const custome_Error_1 = __importDefault(require("@util/custome.Error"));
+const custome_Error_1 = __importDefault(require("../utils/custome.Error"));
 const status_constant_1 = __importDefault(require("../constants/status.constant"));
 const aeiouTemplate_1 = require("../templates/aeiouTemplate");
-const generatePDF_1 = require("@util/generatePDF");
+const generatePDF_1 = require("../utils/generatePDF");
 let AeiouService = class AeiouService {
     constructor(aeoiuModel) {
         this.aeiouModel = aeoiuModel;
