@@ -43,11 +43,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDevService = void 0;
 const inversify_1 = require("inversify");
 const mongoose_1 = __importStar(require("mongoose"));
 const type_1 = require("../constants/type");
+const custome_Error_1 = __importDefault(require("@util/custome.Error"));
+const generatePDF_1 = require("@util/generatePDF");
+const status_constant_1 = __importDefault(require("../constants/status.constant"));
+const productDev_template_1 = require("../templates/productDev.template");
 let ProductDevService = class ProductDevService {
     constructor(_productDevModel) {
         this._productDevModel = _productDevModel;
@@ -94,6 +101,21 @@ let ProductDevService = class ProductDevService {
                     }
                 }
             ]);
+        });
+    }
+    getProductDevPdf(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const canvas = yield this.getProductDev(projectId, '');
+                if (canvas.length == 0) {
+                    throw new custome_Error_1.default(status_constant_1.default.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first");
+                }
+                const htmlString = (0, productDev_template_1.generateProductDevelopmentHtmlString)(canvas[0]);
+                const PDF = yield (0, generatePDF_1.generatePdf)(htmlString, "A1", 1.8);
+                return PDF;
+            }
+            catch (error) {
+            }
         });
     }
 };

@@ -28,6 +28,10 @@ exports.EmapthyService = void 0;
 const inversify_1 = require("inversify");
 const mongoose_1 = __importDefault(require("mongoose"));
 const type_1 = require("../constants/type");
+const custome_Error_1 = __importDefault(require("@util/custome.Error"));
+const generatePDF_1 = require("@util/generatePDF");
+const status_constant_1 = __importDefault(require("../constants/status.constant"));
+const empathy_template_1 = require("../templates/empathy.template");
 let EmapthyService = class EmapthyService {
     constructor(_emparhyModel) {
         this._emparhyModel = _emparhyModel;
@@ -48,7 +52,7 @@ let EmapthyService = class EmapthyService {
             return this._emparhyModel.aggregate([
                 {
                     $match: {
-                        projectId
+                        projectId: projectId
                     }
                 },
                 {
@@ -74,6 +78,22 @@ let EmapthyService = class EmapthyService {
                     }
                 }
             ]);
+        });
+    }
+    getEmpathyPdf(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const canvas = yield this.getEmpathy(projectId, '');
+                if (canvas.length == 0) {
+                    throw new custome_Error_1.default(status_constant_1.default.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first");
+                }
+                const htmlString = (0, empathy_template_1.generateEmpathyHtmlString)(canvas[0]);
+                const PDF = yield (0, generatePDF_1.generatePdf)(htmlString, 'A0', 2.0);
+                return PDF;
+            }
+            catch (error) {
+                throw error;
+            }
         });
     }
 };

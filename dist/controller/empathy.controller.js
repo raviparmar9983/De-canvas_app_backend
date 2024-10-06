@@ -35,7 +35,7 @@ let EmpathyController = class EmpathyController {
                 const userId = req.userId;
                 const projectId = req.projectId;
                 const empathy = Object.assign({}, req.body);
-                const created = yield this._empathyService.createEmpathy(userId, projectId, req.body);
+                const created = yield this._empathyService.createEmpathy(userId, projectId, empathy);
                 res.status(200).json({
                     created
                 });
@@ -60,6 +60,23 @@ let EmpathyController = class EmpathyController {
             }
         });
     }
+    getEmapthyPdf(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.userId;
+                const projectId = req.projectId;
+                const pdfBuffer = yield this._empathyService.getEmpathyPdf(projectId);
+                res.set({
+                    'Content-Type': 'application/pdf',
+                    'Content-Disposition': 'attachment; filename="AEIOU_Summary.pdf"',
+                });
+                res.send(Buffer.from(pdfBuffer));
+            }
+            catch (err) {
+                throw err;
+            }
+        });
+    }
 };
 __decorate([
     (0, inversify_express_utils_1.httpPost)('/'),
@@ -79,6 +96,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object, Function]),
     __metadata("design:returntype", Promise)
 ], EmpathyController.prototype, "getEmpathy", null);
+__decorate([
+    (0, inversify_express_utils_1.httpGet)('/pdf'),
+    __param(0, (0, inversify_express_utils_1.request)()),
+    __param(1, (0, inversify_express_utils_1.response)()),
+    __param(2, (0, inversify_express_utils_1.next)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Function]),
+    __metadata("design:returntype", Promise)
+], EmpathyController.prototype, "getEmapthyPdf", null);
 EmpathyController = __decorate([
     (0, inversify_express_utils_1.controller)('/user/empathy', type_1.TYPES.AuthenticationMiddleware, type_1.TYPES.projectAuthenticatorMiddlerWare),
     __param(0, (0, inversify_1.inject)(type_1.TYPES.empathyService)),

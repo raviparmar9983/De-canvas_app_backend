@@ -62,6 +62,23 @@ let IdeationController = class IdeationController {
             }
         });
     }
+    getEmapthyPdf(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.userId;
+                const projectId = req.projectId;
+                const pdfBuffer = yield this.ideationService.getIdeationPdf(projectId);
+                res.set({
+                    'Content-Type': 'application/pdf',
+                    'Content-Disposition': 'attachment; filename="AEIOU_Summary.pdf"',
+                });
+                res.send(Buffer.from(pdfBuffer));
+            }
+            catch (err) {
+                next(err);
+            }
+        });
+    }
 };
 __decorate([
     (0, inversify_express_utils_1.httpPost)('/'),
@@ -81,6 +98,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object, Function]),
     __metadata("design:returntype", Promise)
 ], IdeationController.prototype, "getIdeation", null);
+__decorate([
+    (0, inversify_express_utils_1.httpGet)('/pdf', type_1.TYPES.AuthenticationMiddleware, type_1.TYPES.projectAuthenticatorMiddlerWare),
+    __param(0, (0, inversify_express_utils_1.request)()),
+    __param(1, (0, inversify_express_utils_1.response)()),
+    __param(2, (0, inversify_express_utils_1.next)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Function]),
+    __metadata("design:returntype", Promise)
+], IdeationController.prototype, "getEmapthyPdf", null);
 IdeationController = __decorate([
     (0, inversify_express_utils_1.controller)('/user/ideation', type_1.TYPES.AuthenticationMiddleware, type_1.TYPES.projectAuthenticatorMiddlerWare),
     __param(0, (0, inversify_1.inject)(type_1.TYPES.ideationService)),

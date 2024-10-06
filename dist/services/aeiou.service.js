@@ -43,10 +43,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const type_1 = require("../constants/type");
 const mongoose_1 = __importStar(require("mongoose"));
+const custome_Error_1 = __importDefault(require("@util/custome.Error"));
+const status_constant_1 = __importDefault(require("../constants/status.constant"));
+const aeiouTemplate_1 = require("../templates/aeiouTemplate");
+const generatePDF_1 = require("@util/generatePDF");
 let AeiouService = class AeiouService {
     constructor(aeoiuModel) {
         this.aeiouModel = aeoiuModel;
@@ -91,6 +98,22 @@ let AeiouService = class AeiouService {
                     }
                 }
             ]);
+        });
+    }
+    getAeiouPdf(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const canvas = yield this.getAeiou(userId);
+                if (canvas.length == 0) {
+                    throw new custome_Error_1.default(status_constant_1.default.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first");
+                }
+                const htmlString = (0, aeiouTemplate_1.generateHtmlString)(canvas[0]);
+                const PDF = yield (0, generatePDF_1.generatePdf)(htmlString, 'A2', 1.8, true);
+                return PDF;
+            }
+            catch (error) {
+                throw error;
+            }
         });
     }
 };
