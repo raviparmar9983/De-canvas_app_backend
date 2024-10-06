@@ -1,0 +1,9 @@
+{
+    "version": 2,
+    "routes": [
+        {
+            "src": "/de-canvas/(.*)",
+            "dest": "/dist/server.js"
+        }
+    ]
+}

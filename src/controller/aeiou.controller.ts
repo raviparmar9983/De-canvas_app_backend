@@ -8,9 +8,6 @@ import { Request, Response, NextFunction } from "express";
 import { IAeiou } from "../interfaces/aeiou.interface";
 import StatusConstants from "../constants/status.constant";
 import CustomeError from "../utils/custome.Error";
-import { generateHtmlString } from "../templates/aeiouTemplate";
-import { resetPaswordTemplate } from "../templates";
-import { generatePdf } from "@util/generatePDF";
 
 @controller('/user/aeiou')
 class AeiouController {
