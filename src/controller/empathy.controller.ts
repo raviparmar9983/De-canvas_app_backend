@@ -17,7 +17,7 @@ class EmpathyController{
             const userId=req.userId!;
             const projectId=req.projectId!;
             const empathy:IEmpathy={...req.body}
-            const created = await this._empathyService.createEmpathy(userId,projectId,req.body);
+            const created = await this._empathyService.createEmpathy(userId,projectId,empathy);
             res.status(200).json({
                 created
             })
@@ -38,6 +38,23 @@ class EmpathyController{
         }
         catch(err:any){
             next(err)
+        }
+    }
+    @httpGet('/pdf')
+    private async getEmapthyPdf(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
+        try {
+
+            const userId:string=req.userId!;
+            const projectId:string=req.projectId!;
+            const pdfBuffer = await this._empathyService.getEmpathyPdf(projectId)
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="AEIOU_Summary.pdf"',
+            });
+            res.send(Buffer.from(pdfBuffer!));
+        }
+        catch (err: any) {
+            throw err
         }
     }
 }

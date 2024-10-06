@@ -37,4 +37,21 @@ class ProduceDev{
             next(err)
         }
     }
+    @httpGet('/pdf', TYPES.AuthenticationMiddleware, TYPES.projectAuthenticatorMiddlerWare)
+    private async getEmapthyPdf(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
+        try {
+
+            const userId=req.userId!;
+            const projectId=req.projectId!;
+            const pdfBuffer = await this._productDevService.getProductDevPdf(projectId)
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="AEIOU_Summary.pdf"',
+            });
+            res.send(Buffer.from(pdfBuffer!));
+        }
+        catch (err: any) {
+            next(err)
+        }
+    }
 }

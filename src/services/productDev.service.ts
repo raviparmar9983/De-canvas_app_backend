@@ -2,6 +2,11 @@ import { IproductDev } from "@interface/prouduct_dev.interface";
 import { inject, injectable } from "inversify";
 import mongoose, { Types } from "mongoose";
 import { TYPES } from "../constants/type";
+import CustomeError from "@util/custome.Error";
+import { generatePdf } from "@util/generatePDF";
+import StatusConstants from "../constants/status.constant";
+import { generateHtmlString } from "../templates/aeiouTemplate";
+import { generateProductDevelopmentHtmlString } from "../templates/productDev.template";
 
 
 @injectable()
@@ -48,5 +53,19 @@ export class ProductDevService {
                 }
             }
         ])
+    }
+    public async getProductDevPdf(projectId: string) {
+        try {
+            const canvas = await this.getProductDev(projectId!, '')
+            if (canvas.length == 0) {
+                throw new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first")
+            }
+            const htmlString = generateProductDevelopmentHtmlString(canvas[0]);
+            const PDF = await generatePdf(htmlString,"A1",1.8);
+            return PDF;
+        }
+        catch (error) {
+
+        }
     }
 }

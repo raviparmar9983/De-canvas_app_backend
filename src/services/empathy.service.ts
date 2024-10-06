@@ -2,6 +2,11 @@ import { IEmpathy } from "@interface/empathy.inteface";
 import { inject, injectable } from "inversify";
 import mongoose, { Mongoose } from "mongoose";
 import { TYPES } from "../constants/type";
+import CustomeError from "@util/custome.Error";
+import { generatePdf } from "@util/generatePDF";
+import StatusConstants from "../constants/status.constant";
+import { generateHtmlString } from "../templates/aeiouTemplate";
+import { generateEmpathyHtmlString } from "../templates/empathy.template";
 
 
 
@@ -23,7 +28,7 @@ export class EmapthyService {
         return this._emparhyModel.aggregate([
             {
                 $match: {
-                    projectId
+                    projectId: projectId
                 }
             },
             {
@@ -49,5 +54,19 @@ export class EmapthyService {
                 }
             }
         ])
+    }
+    public async getEmpathyPdf(projectId: string) {
+        try {
+            const canvas = await this.getEmpathy(projectId, '')
+            if (canvas.length == 0) {
+                throw new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first")
+            }
+            const htmlString = generateEmpathyHtmlString(canvas[0]);
+            const PDF = await generatePdf(htmlString,'A0',2.0);
+            return PDF;
+        }
+        catch (error) {
+            throw error
+        }
     }
 }
