@@ -27,6 +27,7 @@ server.setConfig((app) => {
         extended: true
     }))
     app.use(bodyParser.json())
+    app.get(/, "api server working fine!");
 }).setErrorConfig((app) => {
     app.use(errorController)
 })
