@@ -18,7 +18,7 @@ const server = new InversifyExpressServer(container, null, { rootPath: '/de-canv
 server.setConfig((app) => {
     app.use(cors({
 
-        origin: ['https://de-canvas-frontend-ravi-parmars-projects-2d4937b6.vercel.app/', 'https://de-canvas-frontend-ravi-parmars-projects-2d4937b6.vercel.app/#/', 'http://localhost:4200/', 'http://localhost:4200/#/'], // Replace with your frontend URL
+        origin: ['https://de-canvas-frontend.vercel.app/', 'http://localhost:4200/', 'http://localhost:4200/#/'], // Replace with your frontend URL
         methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
         credentials: true // Enable credentials if you need to send cookies or authorization headers
 
