@@ -38,7 +38,7 @@ class AeiouController {
     @httpGet('/', TYPES.AuthenticationMiddleware, TYPES.projectAuthenticatorMiddlerWare)
     private async getAeiou(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
         try {
-            let canvas = await this.aeiouService.getAeiou(req.userId!)
+            let canvas = await this.aeiouService.getAeiou(req.projectId!)
             if (canvas.length == 0) {
                 return next(new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first"))
             }
@@ -53,9 +53,7 @@ class AeiouController {
     @httpGet('/pdf', TYPES.AuthenticationMiddleware, TYPES.projectAuthenticatorMiddlerWare)
     private async getAeiouPdf(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
         try {
-
-
-            const pdfBuffer = await this.aeiouService.getAeiouPdf(req.userId!)
+            const pdfBuffer = await this.aeiouService.getAeiouPdf(req.projectId!)
             res.set({
                 'Content-Type': 'application/pdf',
                 'Content-Disposition': 'attachment; filename="AEIOU_Summary.pdf"',

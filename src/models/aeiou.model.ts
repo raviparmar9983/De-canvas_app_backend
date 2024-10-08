@@ -3,13 +3,6 @@ import { IAeiou } from "../interfaces/aeiou.interface";
 import StatusConstants from "../constants/status.constant";
 
 export const aeiouSchema = new Schema<IAeiou>({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'user id is required'],
-        unique: true,
-        default:undefined
-    },
     projectId: {
         type: Schema.Types.ObjectId,
         ref: 'Projects',

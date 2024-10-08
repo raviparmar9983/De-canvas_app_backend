@@ -7,6 +7,7 @@ import container from "./inversify.config";
 import mongoose from 'mongoose';
 import errorController from './controller/error.controller';
 import cors from 'cors'
+import { Request, Response } from 'express';
 
 mongoose.connect(process.env.CONN_STR!).then(() => {
     console.log("connected successfully");
@@ -17,8 +18,7 @@ const server = new InversifyExpressServer(container, null, { rootPath: '/de-canv
 
 server.setConfig((app) => {
     app.use(cors({
-
-        origin: ['https://de-canvas-frontend.vercel.app/','https://de-canvas-frontend.vercel.app/#/', 'http://localhost:4200/', 'http://localhost:4200/#/'], // Replace with your frontend URL
+        origin: ['https://de-canvas-frontend.vercel.app/','https://de-canvas-frontend.vercel.app/#/', 'http://localhost:4200/', 'http://localhost:4200/#/','*'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
         credentials: true // Enable credentials if you need to send cookies or authorization headers
 
@@ -27,7 +27,9 @@ server.setConfig((app) => {
         extended: true
     }))
     app.use(bodyParser.json())
-    app.get(/, "api server working fine!");
+    app.get("/",(req:any,res:any)=>{
+        res.send("deployed")
+    })
 }).setErrorConfig((app) => {
     app.use(errorController)
 })

@@ -49,20 +49,6 @@ class UserController {
             await session.endSession();
         }
     }
-    @httpGet('/verify/:token')
-    public async verify(@requestParam('token') token: string, @request() req: Request, @response() res: Response, @next() next: NextFunction) {
-        try {
-            if (!token) throw new CustomeError(StatusConstants.RESOURCE_NOT_FOUND.httpStatusCode, 'token is missing')
-            const newToken = await this.userService.verifyUser(token)
-            res.status(200).json({
-                status: 'success',
-                token: newToken
-            })
-        }
-        catch (err) {
-            next(err);
-        }
-    }
     @httpPost('/login')
     private async login(@request() req: Request, @response() res: Response, @next() next: NextFunction) {
         try {
@@ -81,6 +67,20 @@ class UserController {
         }
         catch (err: any) {
             next(err)
+        }
+    }
+    @httpGet('/verify/:token')
+    public async verify(@requestParam('token') token: string, @request() req: Request, @response() res: Response, @next() next: NextFunction) {
+        try {
+            if (!token) throw new CustomeError(StatusConstants.RESOURCE_NOT_FOUND.httpStatusCode, 'token is missing')
+            const newToken = await this.userService.verifyUser(token)
+            res.status(200).json({
+                status: 'success',
+                token: newToken
+            })
+        }
+        catch (err) {
+            next(err);
         }
     }
     @httpPost('/forgotpassword')

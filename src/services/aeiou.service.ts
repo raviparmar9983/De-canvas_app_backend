@@ -24,9 +24,9 @@ class AeiouService {
             return await this.aeiouModel.create(newdata)
         }
     }
-    public async getAeiou(userId: string) {
+    public async getAeiou(projectId: string) {
         return await this.aeiouModel.aggregate([
-            { $match: { userId } },
+            { $match: { projectId } },
             {
                 $lookup: {
                     from: 'projects',
@@ -52,9 +52,9 @@ class AeiouService {
         ])
     }
 
-    public async getAeiouPdf(userId: string) {
+    public async getAeiouPdf(projectId: string) {
         try {
-            const canvas = await this.getAeiou(userId!)
+            const canvas = await this.getAeiou(projectId!)
             if (canvas.length == 0) {
                 throw new CustomeError(StatusConstants.NOT_FOUND.httpStatusCode, "AEIOU canvas is not found please create first")
             }

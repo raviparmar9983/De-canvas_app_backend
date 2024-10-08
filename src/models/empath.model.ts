@@ -2,12 +2,6 @@ import { IEmpathy } from "@interface/empathy.inteface";
 import mongoose  from "mongoose";
 
 const empathySchema=new mongoose.Schema<IEmpathy>({
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        required:true,
-        unique:true,
-        default:undefined
-    },
     projectId:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,

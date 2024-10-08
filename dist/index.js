@@ -41,7 +41,7 @@ mongoose_1.default.connect(process.env.CONN_STR).then(() => {
 const server = new inversify_express_utils_1.InversifyExpressServer(inversify_config_1.default, null, { rootPath: '/de-canvas' });
 server.setConfig((app) => {
     app.use((0, cors_1.default)({
-        origin: ['https://de-canvas-frontend-ravi-parmars-projects-2d4937b6.vercel.app/', 'https://de-canvas-frontend-ravi-parmars-projects-2d4937b6.vercel.app/#/', 'http://localhost:4200/', 'http://localhost:4200/#/'], // Replace with your frontend URL
+        origin: ['https://de-canvas-frontend.vercel.app/', 'https://de-canvas-frontend.vercel.app/#/', 'http://localhost:4200/', 'http://localhost:4200/#/'], // Replace with your frontend URL
         methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
         credentials: true // Enable credentials if you need to send cookies or authorization headers
     }));
@@ -49,6 +49,9 @@ server.setConfig((app) => {
         extended: true
     }));
     app.use(bodyParser.json());
+    app.get("/", (req, res) => {
+        res.send("service is deployed");
+    });
 }).setErrorConfig((app) => {
     app.use(error_controller_1.default);
 });
